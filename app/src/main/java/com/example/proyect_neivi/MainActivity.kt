@@ -17,6 +17,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,16 +30,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             Proyect_NeiviTheme {
                 // A surface container using the 'background' color from the theme
-                LoginForm(onLoginClicked = { email, password ->
-                })
+                LoginForm(onLoginClicked = { email, password -> })
             }
         }
     }
 }
 
 @Composable
-fun LoginForm(onLoginClicked: (String, String) -> Unit) {
-    var email by remember { mutableStateOf("") }
+fun LoginForm(onLoginClicked: (email:String,password:String) -> Unit) {
+    var email by remember { mutableStateOf("") } //almacena el valor de email en un estado mutable
     var password by remember { mutableStateOf("") }
 
     Box(
@@ -47,13 +47,14 @@ fun LoginForm(onLoginClicked: (String, String) -> Unit) {
             .background(Color.Black)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(69.dp))
             Image(
 
                 painter = painterResource(R.drawable.neivi),
-                contentDescription = "Imagen de inicio de sesión",
+                contentDescription = "neivi",
                 modifier = Modifier.padding(26.dp)
             )
 
@@ -80,6 +81,7 @@ fun LoginForm(onLoginClicked: (String, String) -> Unit) {
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Contraseña") },
+                visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.textFieldColors(
                     //backgroundColor = Color.Gray,
                     focusedIndicatorColor = colorResource(id = R.color.btn),
@@ -87,22 +89,46 @@ fun LoginForm(onLoginClicked: (String, String) -> Unit) {
                     textColor = Color.White,
                     cursorColor = colorResource(id = R.color.btn),
                 ),
-                shape = RoundedCornerShape(3.dp),
+                shape = RoundedCornerShape(3.dp),//border-radius
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password
                 ),
                 modifier = Modifier.padding(16.dp)
             )
 
-            Button(
-                onClick = { onLoginClicked(email, password) },
-                modifier = Modifier
-                    .padding(26.dp)
-                    .height(54.dp)
-                    .width(180.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.btn), contentColor = Color.White)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = "Iniciar sesión")
+                Button(
+                    onClick = { onLoginClicked(email, password) },
+                    modifier = Modifier
+                        .padding(start = 1.dp, end = 4.dp)
+                        .height(54.dp)
+                        .width(141.dp)
+                        .fillMaxWidth(0.5f),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colorResource(id = R.color.btn),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Iniciar sesión")
+                }
+                Button(
+                    onClick = { onLoginClicked(email, password) },
+                    modifier = Modifier
+                        .padding(start = 3.dp, end = 2.dp)
+                        .height(54.dp)
+                        .width(130.dp)
+                        .fillMaxWidth(0.5f),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colorResource(id = R.color.btn),
+                        contentColor = Color.White
+                    )
+
+                ) {
+                    Text(text = "Registrarse")
+                }
             }
             }
         }
